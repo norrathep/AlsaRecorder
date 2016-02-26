@@ -1,0 +1,10 @@
+Compile and insert preload:
+
+gcc -g -fPIC -shared -Wl,-soname,preload.so -ldl -o preload.so  main.c
+export LD_PRELOAD=./preload.so
+
+
+To convert out.raw produced by cartoon001.wav, do the following:
+sox -r 11025 -b 16 -e signed-integer -c 2 out.raw out.wav
+
+Play out.wav -> aplay out.wav
