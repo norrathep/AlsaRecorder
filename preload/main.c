@@ -39,7 +39,11 @@ int snd_pcm_hw_params_set_format(snd_pcm_t *pcm, snd_pcm_hw_params_t *params, sn
 int snd_pcm_set_params(snd_pcm_t *pcm, snd_pcm_format_t format, snd_pcm_access_t access, unsigned int channels, unsigned int rate, int soft_resample, unsigned int latency) 
 {
     int temp;
-    printf("SETTING PARAM\n"); 
+    printf("FORMAT %d\n", (int)format);
+    printf("CHANNEL %d\n", channels);
+    printf("RATE %d\n", rate);
+    printf("RESAMPLE %d\n", soft_resample);
+    printf("LATENCY %d\n", latency);
     wrap_snd_pcm_set_params = wrap(wrap_snd_pcm_set_params,"snd_pcm_set_params");
     temp = wrap_snd_pcm_set_params(pcm,format,access,channels,rate,soft_resample,latency);
     return temp;
@@ -68,10 +72,11 @@ snd_pcm_sframes_t snd_pcm_writei(snd_pcm_t *pcm, const void *buffer,
    printf("OAK WRITE %d\n", counter++);
    printf("size: %ld\n", (long)size);
    printf("first int: %d\n", *(int*)(buffer));
-   printf("next int: %d\n", *(int*)(buffer+(long)size*2));
+   int mult = 8;
+   printf("next int: %d\n", *(int*)(buffer+(long)size*mult));
    printf("size of buffer[0]: %d\n", (int)sizeof(buffer[0]));
    FILE *fp = fopen("out.raw", "a+");
-   fwrite(buffer, sizeof(buffer[0]), (long)size*2, fp);
+   fwrite(buffer, sizeof(buffer[0]), (long)size*mult, fp);
    fclose(fp);
    snd_pcm_sframes_t temp;
    wrap_snd_pcm_writei = wrap(wrap_snd_pcm_writei,"snd_pcm_writei");
