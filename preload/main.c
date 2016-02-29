@@ -72,7 +72,7 @@ snd_pcm_sframes_t snd_pcm_writei(snd_pcm_t *pcm, const void *buffer,
    //printf("size of buffer[0]: %d\n", (int)sizeof(buffer[0]));
 
    // only record when file start exists
-   if(access("start", F_OK) != -1) {
+   if(access("start.oak", F_OK) != -1) {
    	FILE *fp = fopen("out.raw", "a+");
    	fwrite(buffer, sizeof(buffer[0]), (long)size*mult, fp);
    	fclose(fp);
