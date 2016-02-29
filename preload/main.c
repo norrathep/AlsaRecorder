@@ -2,6 +2,7 @@
 
 #include <dlfcn.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <alsa/asoundlib.h>
 
 static int (*wrap_snd_pcm_open)(snd_pcm_t **pcm, const char *name, snd_pcm_stream_t stream, int mode) = NULL;
@@ -30,7 +31,6 @@ void * wrap(void * func,char *name)
 int snd_pcm_hw_params_set_format(snd_pcm_t *pcm, snd_pcm_hw_params_t *params, snd_pcm_format_t val) 
 {
     int temp;
-    printf("SETTING FORMAT %d\n", (int)val);
     wrap_snd_pcm_hw_params_set_format = wrap(wrap_snd_pcm_hw_params_set_format,"snd_pcm_hw_params_set_format");
     temp = wrap_snd_pcm_hw_params_set_format(pcm,params,val);
     return temp;
@@ -54,10 +54,6 @@ int snd_pcm_open(snd_pcm_t **pcm, const char *name, snd_pcm_stream_t stream, int
     int temp;
     counter = 0;
 
-    printf("HEY OAK OAKAO KA\n");
-    printf("HEY OAK OAKAO KA\n");
-    printf("HEY OAK OAKAO KA\n");
-
     wrap_snd_pcm_open = wrap(wrap_snd_pcm_open,"snd_pcm_open");
     temp = wrap_snd_pcm_open(pcm,name,stream,mode);
     fprintf(stderr, "** Calling snd_pcm_open for path:[%s] => fd:[%d]\n",name,temp);
@@ -69,19 +65,21 @@ int snd_pcm_open(snd_pcm_t **pcm, const char *name, snd_pcm_stream_t stream, int
 snd_pcm_sframes_t snd_pcm_writei(snd_pcm_t *pcm, const void *buffer,
                                  snd_pcm_uframes_t size) 
 {
-   printf("OAK WRITE %d\n", counter++);
-   printf("size: %ld\n", (long)size);
-   printf("first int: %d\n", *(int*)(buffer));
+   //printf("size: %ld\n", (long)size);
+   //printf("first int: %d\n", *(int*)(buffer));
    int mult = 8;
-   printf("next int: %d\n", *(int*)(buffer+(long)size*mult));
-   printf("size of buffer[0]: %d\n", (int)sizeof(buffer[0]));
-   FILE *fp = fopen("out.raw", "a+");
-   fwrite(buffer, sizeof(buffer[0]), (long)size*mult, fp);
-   fclose(fp);
+   //printf("next int: %d\n", *(int*)(buffer+(long)size*mult));
+   //printf("size of buffer[0]: %d\n", (int)sizeof(buffer[0]));
+
+   // only record when file start exists
+   if(access("start", F_OK) != -1) {
+   	FILE *fp = fopen("out.raw", "a+");
+   	fwrite(buffer, sizeof(buffer[0]), (long)size*mult, fp);
+   	fclose(fp);
+   }
    snd_pcm_sframes_t temp;
    wrap_snd_pcm_writei = wrap(wrap_snd_pcm_writei,"snd_pcm_writei");
    temp = wrap_snd_pcm_writei(pcm,buffer,size);
    fflush(stderr);
-   printf("wrote: %ld frames\n", (long) temp);
    return temp;
 }
