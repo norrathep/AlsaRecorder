@@ -8,6 +8,6 @@ if [ -f start.oak ]; then
 fi
 
 
-sox -r 44100 -b 32 -e signed-integer -c 2 out.raw out.wav 
+sox -r 11025 -b 16 -e signed-integer -c 2 out.raw out.wav 
 
 rm out.raw

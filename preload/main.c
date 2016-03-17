@@ -67,7 +67,7 @@ snd_pcm_sframes_t snd_pcm_writei(snd_pcm_t *pcm, const void *buffer,
 {
    //printf("size: %ld\n", (long)size);
    //printf("first int: %d\n", *(int*)(buffer));
-   int mult = 8;
+   int mult = 2;
    //printf("next int: %d\n", *(int*)(buffer+(long)size*mult));
    //printf("size of buffer[0]: %d\n", (int)sizeof(buffer[0]));
 
