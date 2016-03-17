@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // Connect buttons to scripts
     connect(ui->recordButton, SIGNAL(clicked()), this, SLOT(startRecording()));
     connect(ui->stopButton, SIGNAL(clicked()), this, SLOT(stopRecording()));
+    connect(ui->playbackButton, SIGNAL(clicked()), this, SLOT(playback()));
 
 
     // Get the current working directory
@@ -94,4 +95,16 @@ void MainWindow::stopRecording()
     stopScript->start(program,args);
 
     ui->statusBar->showMessage("Recording stopped.");
+}
+
+void MainWindow::playback()
+{
+    QProcess *playAudio = new QProcess(this);
+    QString program = "aplay";
+    QStringList args;
+    args << "out.wav"; // Assuming that this is being run from the preload directory
+
+    // TODO: Work on the timing to display the "playing","end of audio", and "error" messages
+    playAudio->start(program,args);
+    ui->statusBar->showMessage("Playing recorded audio...");
 }

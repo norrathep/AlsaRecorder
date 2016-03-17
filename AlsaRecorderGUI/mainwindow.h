@@ -20,6 +20,7 @@ private slots:
     void openPreferences();
     void startRecording();
     void stopRecording();
+    void playback();
 
 private:
     Ui::MainWindow *ui;
