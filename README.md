@@ -1,7 +1,7 @@
 # AlsaRecorder
 
-make sure u install libasound2 libasound2-dev
+Capture audio data.
 
-gcc capture.c -lasound -lm // for capture.c latency.c read.c pcm.c pcm_min.c
-
-gcc -o alsa-record-example alsa-record.c -lasound && ./alsa-record-example hw:0 // for alsa-record.c
+2 approaches: 
+1) at kernel layer (in kernel-solution folder)
+2) at API layer (with the help of preload trick) in preload-solution folder

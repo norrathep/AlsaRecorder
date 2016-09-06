@@ -1,0 +1,23 @@
+Compile and insert preload:
+
+1) build preload linker: gcc -g -fPIC -shared -Wl,-soname,preload.so -ldl -o preload.so  main.c
+2) export preload: export LD_PRELOAD=./preload.so
+
+To enable capturing:
+1) Run start.sh script. The result will be saved as out.wav.
+
+To stop capturing:
+1) Run stop.sh script.
+
+
+To convert out.raw produced by cartoon001.wav, do the following:
+1) change mult var in main.c to 2, recompile and enable capturing
+2) sox -r 11025 -b 16 -e signed-integer -c 2 out.raw out.wav
+
+For Spotify recording:
+1) change mult var in main.c to 8, recompile and enable capturing
+2) sox -r 44100 -b 32 -e signed-integer -c 2 out.raw out.wav
+
+To play out.wav -> aplay out.wav
+
+Run with UI -> ./AlsaRecorderGUI 

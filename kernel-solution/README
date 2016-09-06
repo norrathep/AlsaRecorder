@@ -1,0 +1,12 @@
+Install:
+Replace pcm_native.c in linux/sound/core/ folder and rebuild the kernel.
+
+Description:
+We only modified "snd_pcm_playback_ioctl1" function to support writing
+audio data when its being played on the machine.
+
+If the file "/home/oak/workspace/AlsaThird/preload/start.oak" exists, 
+the driver will capture the audio and write it into "/home/oak/workspace/AlsaThird/preload/out.raw".
+Otherwise, it will just play the audio normally.
+
+
